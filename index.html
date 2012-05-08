@@ -14,7 +14,7 @@
 
 <html>
 	<head>
-		<title>Caching for Coders | How, What, and When to Cache in WordPress</title>
+		<title>Faster WordPress</title>
 
 		<meta charset='utf-8'>
 		<script src='slides.js'></script>
@@ -25,497 +25,63 @@
 	<section class='slides layout-regular template-default'>
 
 		<article class='title-page'>
-			<h1>Caching for Coders: <br /> How, What, and When to Cache in WordPress</h1>
-			<h3 style="margin-top:30px;">Zack Tollman, 10up LLC</h3>
-			<h4>@Zack_Dev, 10up.com</h4>
-			<h4>Slides: tollmanz.github.com/caching-for-coders</h4>
-			<h4>Conversation: github.com/tollmanz/caching-for-coders</h4>
+			<h1>Faster WordPress</h1>
+			<h4><a href="http://evansolomon.me">evansolomon.me</a></h4>
+			<h4><a href="http://twitter.com/evansolomon">@evansolomon</a></h4>
+			<h4><a href="mailto:evan@automattic.com">evan@automattic.com</a></h4>
 		</article>
 
 		<article>
-			<h3>Metaphor</h3>
-
-			<p style="text-align:center;margin-top:50px;">
-				<img src="images/turtles.jpg" />
-			</p>
-
-			<p style="text-align:right;margin-top:60px;font-size:20px;">
-				Source: <a href="http://toblender.com/memcached-story-part-1/" title="The Memcache Story" target="_blank">http://toblender.com/memcached-story-part-1/</a>
-			</p>
-
+		   <h3>Our Setup</h3>
+		   <ol>
+		      <li>VPS</li>
+		      <li>Debian 6</li>
+		      <li>PHP-FPM</li>
+		      <li>APC</li>
+		      <li>nginx</li>
+		      <li>WordPress</li>
+		      <li>Batcache</li>
+		   </ol>
 		</article>
 
 		<article>
-			<h3>Metaphor</h3>
-
-			<p style="text-align:center;margin-top:50px;" class="build">
-				<img src="images/ninja-turtle.jpg" />
-			</p>
-
+		   <h3>VPS</h3>
 		</article>
 
 		<article>
-			<h3>What We Are Talking About</h3>
-
-			<ul>
-				<li>
-					Improving site performance through object (fragment) caching
-					<ul>
-						<li>How to cache</li>
-						<li>What to cache</li>
-						<li>When to cache</li>
-					</ul>
-				</li>
-				<li>
-					No more cookie cutter approaches to caching
-				</li>
-				<li>
-					Not talking about caching plugins or server setups
-					<ul>
-						<li>
-							<a href="http://wordpress.tv/2010/07/10/scott-oshaughnessy-caching-wordpress-boulder10/">
-								Chris Scott and Sean O’Shaughnessy: Caching in WordPress
-							</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
+			<h3>Linux</h3>
 		</article>
 
 		<article>
-			<h3>How to Cache</h3>
-
-			<p>Transients <a href="http://codex.wordpress.org/Transients_API" target="_blank"><img src="images/link.png" /></a></p>
-
-			<ul>
-				<li>set_transient, get_transient, delete_transient</li>
-				<li>Uses the database if an object cache is not present</li>
-			</ul>
-
-			<pre>
-function zt_display_leaders() {
-    $leaders = get_transient( 'zt-leaders' );
-    if ( false === $leaders ) {
-        $leaders = zt_get_leaders();
-        set_transient( 'zt-leaders', $leaders, 300 );
-    }
-
-    return $leaders;
-}</pre>
-
+			<h3>PHP-FPM</h3>
 		</article>
 
 		<article>
-			<h3>How to Cache</h3>
-
-			<p>WP_Object_Cache <a href="http://codex.wordpress.org/Class_Reference/WP_Object_Cache" target="_blank"><img src="images/link.png" /></a></p>
-
-			<ul>
-				<li>wp_cache_add, wp_cache_get, wp_cache_delete (amongst others)</li>
-				<li>Success depends on server environment</li>
-			</ul>
-
-			<pre>
-function zt_display_leaders() {
-    $leaders = wp_cache_get( 'zt-leaders', 'zt-stats' );
-    if ( false === $leaders ) {
-        $leaders = zt_get_leaders();
-        wp_cache_set( 'zt-leaders', $leaders, 'zt-stats', 300 );
-    }
-
-    return $leaders;
-}</pre>
-			
-			<p>Discussion of some differences by Otto <a href="http://wordpress.stackexchange.com/questions/26796/using-transients-in-conjunction-with-memcached/26804#26804" title="WPSE Discussion" target="_blank"><img src="images/link.png" /></a></p>
-			
+			<h3>nginx</h3>
 		</article>
 
 		<article>
-			<h3>What to Cache</h3>
-			<ul>
-				<li>
-					Requests to external services
-					<ul>
-						<li>wp_remote_*</li>
-					</ul>
-				</li>
-				<li>
-					Expensive queries
-					<ul>
-						<li>'post__not_in', 'meta_query', 'tax_query'</li>
-						<li>Identify slow queries with Debug Bar/Extender</li>
-					</ul>
-				</li>
-				<li>
-					Repeated routines/queries
-					<ul>
-						<li>First image in post, dealing with child taxonomy terms</li>
-					</ul>
-				</li>
-				<li>
-					Infrequently updated data
-					<ul>
-						<li>menus <a href="http://hitchhackerguide.com/2011/10/07/caching-wordpress-navigation-menus-wp_nav_menu-wrapper/" target="_blank"><img src="images/link.png" /></a>, related posts, lists of data</li>
-					</ul>
-				</li>
-			</ul>
+			<h3>MySQL</h3>
 		</article>
 
 		<article>
-			<h3>When to Cache</h3>
-
-			<ul>
-				<li>The goal is to reduce the server's workload</li>
-				<li>How can you remove queries or expensive processes?</li>
-			</ul>
-
-			<h3 class="second-header" style="margin-top:40px;">Gameplan</h3>
-
-			<ul>
-				<li>Ideally, refresh cache ONLY when data is added/changed</li>
-				<li>Minimize running intensive processes</li>
-				<li>Avoid caching on front end page requests</li>
-				<li>Design to fail gracefully</li>
-			</ul>
+			<h3>Email</h3>
 		</article>
 
 		<article>
-			<h3>When to Cache &mdash; A Common Solution</h3>
-
-			<p>Cache when the data is not cached</p>
-
-			<pre>
-// functions.php
-function zt_get_tweet() {
-    if ( false === ( $tweet = get_transient( 'zt-tweet' ) ) ) {
-        $tweet = zt_request_tweet(); // Talk to Twitter
-        set_transient( 'zt-tweet', $tweet, 300 );
-    }
-    return $tweet;
-}
-
-// sidebar.php
-&lt;h3&gt;Latest Tweet:&lt;/h3&gt;
-&lt;p&gt;&lt;?php echo zt_get_tweet(); ?&gt;&lt;/p&gt;</pre>
-
+			<h3>WordPress</h3>
 		</article>
 
 		<article>
-			<h3>When to Cache &mdash; When the Data Changes</h3>
-
-			<ul>
-				<li>
-					Generate the data on an admin event
-					<ul>
-						<li>Generates data only when changed</li>
-						<li>Reduces the chance of front end generation</li>
-					</ul>
-				</li>
-				<li>
-					Helpful Events/Hooks
-					<ul>
-						<li>Publishing/Updating posts: publish_post</li>
-						<li>Changing post status: transition_post_status</li>
-						<li>Creating terms: created_{$taxonomy}</li>
-						<li>Updating terms: edited_{$taxonomy}</li>
-					</ul>
-				</li>
-			</ul>
+			<h3>Batcache</h3>
 		</article>
 
 		<article>
-			<h3>When to Cache &mdash; When the Data Changes</h3>
-
-			<pre>
-function zt_set_best_games( $post_id, $post ) {
-    if ( 'zt-game' != $post->post_type )
-        return false;
-
-    zt_determine_best_games();
-}
-
-add_action( 'publish_post', 'zt_set_best_games', 99, 2 );
-
-function zt_determine_best_games() {
-    /* Get best reviewed games; set to $top_games */
-    set_transient( 'zt-top-games', $top_games );
-    return $top_games;
-}</pre>
-			
-			<p><em>In 2 years</em></p>
-			<p>1 post per day: 730 runs</p>
-			<p>Common solution: 210,240 runs</p>
-
+			<h3>Finale</h3>
 		</article>
 
 		<article>
-			<h3>When to Cache &mdash; On an Interval</h3>
-
-			<ul>
-				<li>
-					Use scheduled events to cache unpredictable data
-					<ul>
-						<li>e.g., external data</li>
-					</ul>
-				</li>
-				<li>Avoids unnecessary requests</li>
-				<li>Reduces the chance of front end caching</li>
-			</ul>
-
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; On an Interval</h3>
-
-			<pre>
-function zt_schedule_tweet_retrieval() {
-    if ( ! wp_next_scheduled( 'zt_tweet_sched' ) )
-        wp_schedule_event( time(), 'hourly', 'zt_tweet_sched' );
-    add_action( 'zt_tweet_sched', 'zt_request_tweet' );
-}
-add_action( 'init', 'zt_schedule_tweet_retrieval' );
-
-function zt_request_tweet() {
-    // Talk to Twitter
-    set_transient( 'zt-tweet', $tweet );
-    return $tweet;
-}
-
-function zt_get_tweet() {
-    if ( false === ( $tweet = get_transient( 'zt-tweet' ) ) ) {
-        $tweet = zt_request_tweet(); // Talk to Twitter
-        set_transient( 'zt-tweet', $tweet );
-    }
-    return $tweet;
-}</pre>
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; Failing Gracefully</h3>
-			
-			<ul>
-				<li>Never trust that data is in the cache</li>
-				<li>
-					Have a backup plan
-					<ul>
-						<li>Display placeholder text</li>
-						<li>Regenerate data</li>
-						<li>Backup storage (Options API)</li>
-					</ul>
-				</li>
-			</ul>
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; Failing Gracefully</h3>
-
-			<p>Placeholder text</p>
-			
-			<pre>
-function zt_display_tweet() {
-    if ( $tweet = get_transient( 'zt-tweet' ) )
-        return $tweet;
-    else
-        return 'Latest Tweet Unavailable';
-}</pre>
-			<p>Regenerate data</p>
-			
-			<pre>
-function zt_display_tweet() {
-    if ( $tweet = get_transient( 'zt-tweet' ) )
-        return $tweet;
-    else
-        return zt_get_tweet(); // Talk to Twitter
-}</pre>
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; Failing Gracefully</h3>
-
-			<p>Storing a "backup"</p>
-
-			<pre>
-function zt_schedule_tweet_retrieval() {
-    if ( ! wp_next_scheduled( 'zt_tweet_sched' ) )
-        wp_schedule_event( time(), 'hourly', 'zt_tweet_sched' );
-    add_action( 'zt_tweet_sched', 'zt_generate_tweet' );
-}
-
-add_action( 'init', 'zt_schedule_tweet_retrieval' );
-
-function zt_generate_tweet() {
-    $tweet = zt_request_tweet(); // Talk to Twitter
-    set_transient( 'zt-tweet', $tweet );
-
-    if ( ! get_option( 'zt-tweet' ) )
-        add_option( 'zt-tweet', $tweet, '', 'no' );
-    else
-        update_option( 'zt-tweet', $tweet );
-
-    return $tweet;
-}</pre>
-
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; Failing Gracefully</h3>
-
-			<p>Using the "backup"</p>
-
-			<pre>
-function zt_display_tweet() {
-    if ( $tweet = get_transient( 'zt-tweet' ) ) {
-        return $tweet;
-    } elseif ( $tweet = get_option( 'zt-tweet' ) {
-        set_transient( 'zt-tweet', $tweet );
-        return $tweet;
-    } else {
-        return zt_generate_tweet();
-    }
-}</pre>
-		</article>
-
-		<article>
-			<h3>When to Cache &mdash; Avoid Front End Caching</h3>
-
-			<ul>
-				<li>Flooding
-					<ul>
-						<li>Many concurrent users cause overload</li>
-					</ul>
-				</li>
-				<li>Consider "locking" techniques if generating on front end</li>
-				<li>
-					<a href="https://github.com/markjaquith/WP-TLC-Transients" title="TLC Transients" target="_blank">
-						Mark Jaquith's WP-TLC-Transients
-					</a>
-				</li>
-			</ul>
-
-		</article>
-
-		<article>
-			<h3>Beer List</h3>
-
-			<pre>
-function zt_schedule_generate_beer() {
-    if ( ! wp_next_scheduled( 'zt_beer_sched' ) )
-        wp_schedule_event( time(), 'daily', 'zt_beer_sched' );
-    add_action( 'zt_beer_sched', 'zt_generate_beer_list' );
-}
-add_action( 'init', 'zt_schedule_generate_beer' );
-
-function zt_generate_beer_list() {
-    // Query API and generate HTML
-    $beer_list = zt_get_beer_list();
-    set_transient( 'zt-beers', $beer_list );
-    delete_transient( 'zt-beer-sched-single' );
-    return $beer_list;
-}
-
-function zt_generate_beer_on_publish( $post_id, $post ) {
-    zt_generate_beer_list();
-}
-add_action( 'publish_post', 'zt_generate_beer_on_publish', 10, 2 );</pre>
-
-		</article>
-
-		<article>
-			<h3>Beer List</h3>
-
-			<pre>
-// Same function from previous slide
-function zt_generate_beer_list() {
-    // Query API and generate HTML
-    $beer_list = zt_get_beer_list();
-    set_transient( 'zt-beers', $beer_list );
-    delete_transient( 'zt-beer-sched-single' );
-    return $beer_list;
-}
-
-function zt_display_all_the_beers() {
-    if ( $beers = get_transient( 'zt-beers' ) ) {
-        return $beers;
-    } else {
-        if ( ! get_transient( 'zt-beer-sched-single' ) ) {
-            set_transient( 'zt-beer-sched-single', 'yes' );
-            wp_schedule_single_event( time(), 'zt_beer_sched' );
-        }
-        return 'Beer list is being generated.';
-    }
-}</pre>
-
-		</article>
-
-		<article class="beer-list">
-			<h3>Beer List</h3>
-
-			<section style="float:left;width:50%;margin-top:20px;">
-				<h4>Mission Brewery</h4>
-
-				<ul>
-					<li>Shipwrecked Double IPA</li>
-					<li>Amber Ale</li>
-					<li>Blonde Ale</li>
-					<li>Hefeweizen</li>
-					<li>IPA</li>
-				</ul>
-
-				<h4>The Beer Company</h4>
-
-				<ul>
-					<li>Beer list not available.</li>
-				</ul>
-
-				<h4>Butcher&#039;s Brewing Company</h4>
-
-				<ul>
-					<li>Mucho Aloha HPA</li>
-					<li>Mucho Aloha Imperial IPA</li>
-					<li>Nut Brown Ale</li>
-					<li>Pig's Premium Nut Brown</li>
-				</ul>
-			</section>
-
-			<section style="float:left;width:50%;margin-top:20px;">
-				<h4>Coronado Brewing Company</h4>
-
-				<ul>
-					<li>Islander IPA</li>
-					<li>Point Loma</li>
-					<li>Uptown Brown</li>
-					<li>Mermaid Red</li>
-					<li>Four Brothers Pale Ale</li>
-					<li>Coronado Golden Ale</li>
-					<li>Mermaids Red Ale</li>
-					<li>Bugger Brown</li>
-					<li>Outlet Stout</li>
-					<li>Idiot IPA</li>
-					<li>Islandweizen</li>
-					<li>Black Ops IPA</li>
-					<li>Frog's Breath IPA</li>
-					<li>Hoppy Daze</li>
-					<li>Black Pearl</li>
-					<li>Hop Scotch</li>
-					<li>North Island</li>
-					<li>Saison By the Sea</li>
-					<li>Stoopid Stout</li>
-					<li>Down N out</li>
-					<li>Barrel Aged Barley Wine Ale</li>
-				</ul>
-			</section>
-
-		</article>
-
-		<article>
-			<h3>Thank You</h3>
-
-			<p>Andrew Nacin (@nacin)</p>
-			<p>Daniel Bachhuber (@danielbachhuber)</p>
-			<p>Helen Hou-Sandi (@helenhousandi)</p>
-			<p>Laura Milewski (@l</p>
-			<p>Steve Locker (@slocker3)</p>
-
+			<h3>Tweaks</h3>
 		</article>
 
 	</section>

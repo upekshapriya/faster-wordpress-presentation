@@ -89,8 +89,6 @@ body {
 }
 
 .slides.template-default > article:not(.nobackground):not(.biglogo) {
-  background: url(images/10uplogo.png) 780px 640px no-repeat; 
-  
   background-color: #fefefe;
 } 
 
@@ -136,12 +134,6 @@ body {
   margin-left: 500px;
 }
 
-/* Slide styles */
-
-/*.slides.template-default article.biglogo {
-  background: white url(source/images/google-logo.png) 50% 50% no-repeat;
-}*/
-
 /* Slides */
 
 .slides > article {
@@ -149,17 +141,17 @@ body {
 }
 .slides > article.far-past {
   display: block;
-  transform: translate(-2040px);
-  -o-transform: translate(-2040px);
-  -moz-transform: translate(-2040px);
-  -webkit-transform: translate3d(-2040px, 0, 0);
+  transform: translate(-2240px);
+  -o-transform: translate(-2240px);
+  -moz-transform: translate(-2240px);
+  -webkit-transform: translate3d(-2240px, 0, 0);
 }
 .slides > article.past {
   display: block;
-  transform: translate(-1020px);
-  -o-transform: translate(-1020px);
-  -moz-transform: translate(-1020px);
-  -webkit-transform: translate3d(-1020px, 0, 0);
+  transform: translate(-1220px);
+  -o-transform: translate(-1220px);
+  -moz-transform: translate(-1220px);
+  -webkit-transform: translate3d(-1220px, 0, 0);
 }
 .slides > article.current {
   display: block;
@@ -170,17 +162,17 @@ body {
 }
 .slides > article.next {
   display: block;
-  transform: translate(1020px);
-  -o-transform: translate(1020px);
-  -moz-transform: translate(1020px);
-  -webkit-transform: translate3d(1020px, 0, 0);
+  transform: translate(1220px);
+  -o-transform: translate(1220px);
+  -moz-transform: translate(1220px);
+  -webkit-transform: translate3d(1220px, 0, 0);
 }
 .slides > article.far-next {
   display: block;
-  transform: translate(2040px);
-  -o-transform: translate(2040px);
-  -moz-transform: translate(2040px);
-  -webkit-transform: translate3d(2040px, 0, 0);
+  transform: translate(2240px);
+  -o-transform: translate(2240px);
+  -moz-transform: translate(2240px);
+  -webkit-transform: translate3d(2240px, 0, 0);
 }
 
 .slides.layout-widescreen > article.far-past,
@@ -264,7 +256,10 @@ a {
   color: #dc322f;
 }
 a:hover {
-  text-decoration: none;
+  text-decoration: underline;
+}
+h4 a {
+	text-decoration: none;
 }
 
 p {
@@ -292,6 +287,7 @@ h1 {
   line-height: 1.15;
 
   margin-top: 150px;
+  margin-bottom: 100px;
   padding-right: 40px;
 
   color: #268bd2;
@@ -314,7 +310,15 @@ h3 {
   line-height: 1.1;
 
   padding-right: 40px;
+  margin-bottom: 50px;
+  
+  color: #268BD2;
 }
+
+h4 {
+  font-size: 30px;
+}
+
 
 article.fill h3 {
   background: rgba(255, 255, 255, .75);
@@ -346,11 +350,12 @@ li {
   padding: 0;
   margin: 0;
 
-  margin-bottom: .5em;
+  margin-bottom: 1.5em;
+}
+li p {
+	margin-top: 10px;
 }
 li::before {
-  content: '·';
-
   width: .75em;
   margin-left: -.75em;
 
@@ -362,10 +367,10 @@ pre {
 
   font-size: 18px;
   line-height: 1.3;
-  padding: 5px 10px;
+  padding: 15px 15px;
 
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   
   max-height: 510px;
 
@@ -439,6 +444,12 @@ article.fill img {
 img.centered {
   margin: 0 auto;
   display: block;
+}
+
+img.hfill {
+	max-width: 116%;
+	margin-left: -60px;
+	padding-top: 15px;
 }
 
 table {
@@ -581,17 +592,4 @@ article.smaller q::after {
 /* Custom / New */
 .border {
 	border: 1px solid #ddd;
-}
-
-.beer-list h4 {
-    font-size: 20px;
-}
-
-.beer-list ul {
-    margin-top: 5px;
-    font-size: 20px;
-}
-
-.beer-list ul li {
-    margin-bottom: 0;
 }
