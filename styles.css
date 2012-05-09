@@ -306,7 +306,7 @@ h2 {
 }
 
 h3 {
-  font-size: 44px;
+  font-size: 56px;
   line-height: 1.1;
 
   padding-right: 40px;
@@ -332,6 +332,7 @@ article.fill h3 {
 }
 
 .title-page h3 {
+	font-size: 44px;
 	color: #666;
 }
 
@@ -353,7 +354,9 @@ ul ul {
 li {
   padding: 0;
   margin: 0;
-
+  margin-bottom: 1.5em;
+}
+ol li {
   margin-bottom: 0.4em;
   font-size: 40px;
 }
