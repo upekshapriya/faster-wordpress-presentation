@@ -64,7 +64,156 @@
 
 		<article>
 			<h3>Linux</h3>
+			<ul>
+				<li>
+					<h4>Debian 6</h4>
+					<p>Nice and lightweight</p>
+				</li>
+				<li>
+					<h4>"But I really love...[insert other distro]"</h4>
+					<p>That's fine, go ahead and use it</p>
+				</li>
+			</ul>
 		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Linode's "Getting Started" Tutorial <a href="http://library.linode.com/getting-started#sph_install-security-updates"><img src="images/link.png"></a></p>
+<pre># First thing's first, change your password
+passwd
+
+# Set our hostname
+echo "dimmagio" > /etc/hostname
+
+# ...and timezone
+dpkg-reconfigure tzdata
+
+# Update our installer
+apt-get update
+apt-get upgrade --show-upgraded
+
+# Sudo make me a sandwich
+apt-get install sudo
+</pre>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Slicehost's "Debian Part 1" <a href="http://articles.slicehost.com/2009/3/31/debian-lenny-setup-page-1"><img src="images/link.png"></a></p>
+<pre># Time for a new user account
+/usr/sbin/adduser evan
+
+# Our new user needs sudo
+/usr/sbin/visudo
+
+# Have your public key ready?
+scp ~/.ssh/id_rsa.pub evan@123.45.67.890:
+mkdir ~evan/.ssh
+mv ~evan/id_rsa.pub ~evan/.ssh/authorized_keys
+chown -R evan:evan ~evan/.ssh
+chmod 700 ~evan/.ssh
+chmod 600 ~evan/.ssh/authorized_keys
+</pre>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Make sure our new user can get in</p>
+<pre>nano /etc/ssh/sshd_config
+</pre>
+
+				<p>Some sensible defaults</p>
+<pre>
+Port 12345  # Whatever port you like
+Protocol 2
+PermitRootLogin no
+PasswordAuthentication no
+UseDNS no
+AllowUsers demo
+</pre>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Make sure no one else can get in</p>
+<pre>nano /etc/iptables.up.rules
+</pre>
+
+				<p>Grab <a href="http://articles.slicehost.com/assets/2007/9/4/iptables.txt">Slicehost's rules</a> and make sure they're always applied</p>
+<pre>nano /etc/network/if-pre-up.d/iptables
+</pre>
+
+<pre>#!/bin/sh
+/sbin/iptables-restore < /etc/iptables.up.rules
+</pre>
+
+<pre>chmod +x /etc/network/if-pre-up.d/iptables</pre>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Let's see if it worked (don't log out yet!)</p>
+<pre># Reload our SSH settings
+/etc/init.d/ssh reload
+</pre>
+
+<pre># Now on your local machine try to connect
+ssh -p 12345 evan@123.45.67.890
+</pre>
+
+			<p>Did it work? Great. Now log out of <code>root</code> and never log back in.</p>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Slicehost's "Debian Part 2" <a href="http://articles.slicehost.com/2009/3/31/debian-lenny-setup-page-2"><img src="images/link.png"></a></p>
+				<p>Let's do some housekeeping</p>
+<pre># Update our packages
+sudo aptitude update
+
+# Make sure we're using the right locale
+sudo aptitude install locales
+sudo dpkg-reconfigure locales
+
+# One more update
+sudo aptitude update
+# And upgrade our installed packages
+sudo aptitude safe-upgrade
+
+# Let's grab some developer tools while we're here
+sudo aptitude install build-essential
+</pre>
+
+		</article>
+
+		<article>
+			<h3>Linux</h3>
+				<p>Your prompt: know it and love it</p>
+				<p>Git auto-complete script <a href="https://gist.github.com/2273507"><img src="images/link.png"></a></p>
+<pre>PROMPT_COMMAND='DIR=`pwd|sed -e "s!$HOME!~!"`; if [ ${#DIR} -gt 30 ]; then CurDir=${DIR:0:12}...${DIR:${#DIR}-15}; else CurDir=$DIR; fi'
+
+#show git branch name in prompt
+PS1='\[\e[1;32m\]\u: $CurDir $(__git_ps1 " (%s)")\$\[\e[0m\] '
+
+# make bash autocomplete with up arrow
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+      
+# make tab cycle through commands instead of listing
+bind '"\t":menu-complete'
+bind "set completion-ignore-case on"
+
+#git completion
+source ~/scripts/git-completion.sh
+</pre>
+			
+		</article>
+
 
 		<article>
 			<h3>PHP-FPM</h3>
