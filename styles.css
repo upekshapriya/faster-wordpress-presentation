@@ -354,7 +354,8 @@ li {
   padding: 0;
   margin: 0;
 
-  margin-bottom: 1.5em;
+  margin-bottom: 0.4em;
+  font-size: 40px;
 }
 li p {
 	margin-top: 10px;
