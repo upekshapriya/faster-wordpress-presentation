@@ -34,7 +34,7 @@
 
 		<article>
 		   <h3>Our Setup</h3>
-		   <ol>
+		   <ol class="build">
 		      <li>VPS</li>
 		      <li>Debian 6</li>
 		      <li>PHP-FPM</li>
@@ -47,7 +47,7 @@
 
 		<article>
 		   <h3>VPS</h3>
-		   <ul>
+		   <ul class="build">
 		   	<li>
 		   		<p>VPS = Virtual Private Server</p>
 		   	</li>
@@ -64,7 +64,7 @@
 
 		<article>
 			<h3>Linux</h3>
-			<ul>
+			<ul class="build">
 				<li>
 					<h4>Debian 6</h4>
 					<p>Nice and lightweight</p>
@@ -299,7 +299,7 @@ net_buffer_length = 2K
 		<article>
 			<h3>WordPress</h3>
 			<h4>A few assumptions</h4>
-			<ul>
+			<ul class="build">
 				<li>WordPress multisite</li>
 				<li>Multisite domain mapping plugin</li>
 				<li>WordPress will manage the whole site</li>
@@ -310,7 +310,7 @@ net_buffer_length = 2K
 		<article>
 			<h3>WordPress</h3>
 			<h4>A few decisions</h4>
-			<ul>
+			<ul class="build">
 				<li>Public folder will be a checkout of the Git repo</li>
 				<li>WordPress will be version controlled in my own repo</li>
 				<li>Local development and settings will use Mark Jaquith's <code>local-config.php</code> technique <a href="http://markjaquith.wordpress.com/2011/06/24/wordpress-local-dev-tips/"><img src="images/link.png"></a></li>
@@ -347,7 +347,8 @@ net_buffer_length = 2K
 			<p>Usually WordPress supplies your rewrite rules. We'll roll our own.</p>
 			<p>Grab mine on Github <a href="https://gist.github.com/2274120"><img src="images/link.png"></a></p>
 			<p>We also need a simple plugin to tell WordPress we're doing this. Drop it into <code>/wp-content/mu-plugins</code></p>
-<pre>/*
+<pre>&lt;?php
+/*
 Plugin name: nginx Pretty Permalinks
 Description: Remove index.php from permalinks
 */
@@ -357,7 +358,26 @@ add_filter( 'got_rewrite', '__return_true', 999 );
 		</article>
 
 		<article>
+			<h3>WordPress</h3>
+			<h4>nginx</h4>
+			<p>nginx still doesn't know about our custom rewrite rules.</p>
+			<p>Mine live in the document root and get symlinked to nginx's virtual hosts directory.</p>
+<pre>sudo ln -s /srv/www/domain.com/public/.nginx-conf /etc/nginx/sites-enabled/domain.com</pre>
+			<p>And then...</p>
+<pre>sudo /etc/init.d/nginx restart</pre>
+		</article>
+
+		<article>
 			<h3>Batcache</h3>
+			<h4>X-nananana</h4>
+			<p>There are dozens of caching plugins for WordPress.</p>
+			<p>I like Batcache because it is:</p>
+			<ul class="build">
+				<li>Simple</li>
+				<li>Super-configurable</li>
+				<li>Consistent across environments</li>
+				<li>Awesome (we use it on WordPress.com)</li>
+			</ul>
 		</article>
 
 		<article>
