@@ -243,7 +243,7 @@ sudo apt-get upgrade
 				<p>Configure PHP-FPM to work well in our environment</p>
 				<p>Your milage may vary</p>
 <pre>sudo nano /etc/php5/fpm/pool.d/www.conf</pre>
-				<p>You can grab my settings <a href="https://gist.github.com/2273968"><img src="./Faster WordPress_files/link.png"></a></p>
+				<p>You can grab my settings <a href="https://gist.github.com/2273968"><img src="images/link.png"></a></p>
 				<p>After your settings are in place, restart PHP. That's it.</p>
 <pre>sudo /etc/init.d/php5-fpm restart</pre>
 		</article>
@@ -268,7 +268,7 @@ sudo apt-get upgrade
 <pre>sudo apt-get install nginx</pre>
 			<p>You know the drill by now, time to configure it</p>
 <pre>sudo nano /etc/nginx/nginx.conf</pre>
-			<p>Steal my config <a href="https://gist.github.com/2274081"><img src="./Faster WordPress_files/link.png"></a> and restart. That's it.</p>
+			<p>Steal my config <a href="https://gist.github.com/2274081"><img src="images/link.png"></a> and restart. That's it.</p>
 <pre>sudo /etc/init.d/nginx restart</pre>
 		</article>
 
@@ -276,7 +276,7 @@ sudo apt-get upgrade
 			<h3>MySQL</h3>
 			<p>This is WordPress' database of choice. Let's install it.</p>
 <pre>sudo apt-get install mysql-server php5-mysql</pre>
-			<p>Check out Linode's MySQL Low-Memory Settings article <a href="http://library.linode.com/troubleshooting/memory-networking#sph_mysql-low-memory-settings"><img src="./Faster WordPress_files/link.png"></a></p>
+			<p>Check out Linode's MySQL Low-Memory Settings article <a href="http://library.linode.com/troubleshooting/memory-networking#sph_mysql-low-memory-settings"><img src="images/link.png"></a></p>
 <pre>sudo nano /etc/mysql/my.cnf</pre>
 <pre>key_buffer = 16K
 max_allowed_packet = 1M
@@ -291,7 +291,7 @@ net_buffer_length = 2K
 			<h3>Email</h3>
 			<ul>
 				<li>WordPress likes to send emails sometimes. It's not absolutely required, but it's nice to have.</li>
-				<li>Linode has a great send-only mail server article <a href="http://library.linode.com/email/exim/send-only-mta-debian-6-squeeze"><img src="./Faster WordPress_files/link.png"></a></li>
+				<li>Linode has a great send-only mail server article <a href="http://library.linode.com/email/exim/send-only-mta-debian-6-squeeze"><img src="images/link.png"></a></li>
 				<li>This will <strong>not</strong> help you setup an email inbox on your server. I'd just use Google Apps for that.</li>
 			</ul>
 		</article>
@@ -313,7 +313,7 @@ net_buffer_length = 2K
 			<ul>
 				<li>Public folder will be a checkout of the Git repo</li>
 				<li>WordPress will be version controlled in my own repo</li>
-				<li>Local development and settings will use Mark Jaquith's <code>local-config.php</code> technique <a href="http://markjaquith.wordpress.com/2011/06/24/wordpress-local-dev-tips/"><img src="./Faster WordPress_files/link.png"></a></li>
+				<li>Local development and settings will use Mark Jaquith's <code>local-config.php</code> technique <a href="http://markjaquith.wordpress.com/2011/06/24/wordpress-local-dev-tips/"><img src="images/link.png"></a></li>
 			</ul>
 		</article>
 
@@ -336,7 +336,7 @@ net_buffer_length = 2K
 		<article>
 			<h3>WordPress</h3>
 			<h4>Multisite</h4>
-			<p>The Codex has a great article to start installing Multisite <a href="http://codex.wordpress.org/Create_A_Network"><img src="./Faster WordPress_files/link.png"></a></p>
+			<p>The Codex has a great article to start installing Multisite <a href="http://codex.wordpress.org/Create_A_Network"><img src="images/link.png"></a></p>
 			<p>...with one exception: remember how we <code>.gitignore</code>d the <code>.htaccess</code> file?</p>
 			<p>The Codex assumes we're using Apache.  Since we're using nginx we'll handle our rewrites on our own.</p>
 		</article>
