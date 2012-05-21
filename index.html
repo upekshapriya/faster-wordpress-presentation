@@ -381,11 +381,25 @@ add_filter( 'got_rewrite', '__return_true', 999 );
 		</article>
 
 		<article>
-			<h3>Finale</h3>
+			<h3>Batcache</h3>
+			<p>We'll need two plugins:</p>
+			<ul>
+				<li>Batcache <a href="http://wordpress.org/extend/plugins/batcache/"><img src="images/link.png"></a></li>
+				<li>APC Backend <a href="http://wordpress.org/extend/plugins/apc/"><img src="images/link.png"></a></li>
+			</ul>
+			<p>These are <strong>not</strong> normal plugins, they won't go in the standard <code>/wp-content/plugins</code> directory.</p>
+			<p>They also require a new constant </p>
+<pre>define('WP_CACHE', true);</pre>	
 		</article>
 
 		<article>
-			<h3>Tweaks</h3>
+			<h3>Finale</h3>
+			<h4>That's it!</h4>
+			<p>This is just a start. Some other links you may like:</p>
+			<ul>
+				<li>Hardening WordPress <a href="http://codex.wordpress.org/Hardening_WordPress"><img	src="images/link.png"></a></li>
+				<li>Linode's tutorials <a href="http://library.linode.com/"><img src="images/link.png"></a></li>
+			</ul>
 		</article>
 
 	</section>
