@@ -342,6 +342,21 @@ net_buffer_length = 2K
 		</article>
 
 		<article>
+			<h3>WordPress</h3>
+			<h4>nginx</h4>
+			<p>Usually WordPress supplies your rewrite rules. We'll roll our own.</p>
+			<p>Grab mine on Github <a href="https://gist.github.com/2274120"><img src="images/link.png"></a></p>
+			<p>We also need a simple plugin to tell WordPress we're doing this. Drop it into <code>/wp-content/mu-plugins</code></p>
+<pre>/*
+Plugin name: nginx Pretty Permalinks
+Description: Remove index.php from permalinks
+*/
+
+add_filter( 'got_rewrite', '__return_true', 999 );
+</pre>
+		</article>
+
+		<article>
 			<h3>Batcache</h3>
 		</article>
 
